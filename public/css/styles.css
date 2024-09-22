@@ -1,6 +1,294 @@
+/* My color palette -> https://coolors.co/palette/add7f6-87bfff-3f8efc-2667ff-3b28cc */
+
 /******* Change Box Model ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
+}
+
+header{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18px;
+}
+
+h1, h2, h3 {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+  background-image: url('/images/site/small_check.jpg');
+  background-attachment: fixed;
+  margin: 0;
+}
+
+#wrapper {
+  /* display: grid; */
+  background-color: white;
+  /* margin: 10%; */
+  border: 10px solid #3F8EFC;
+  /* padding: 10px; */
+  border-radius: 10px;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+}
+
+header span {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+#tools {
+  text-transform: uppercase;
+}
+
+#top-header a{
+  color: black;
+  text-decoration: none;
+}
+
+#top-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+nav {
+  display: grid;
+}
+
+nav ul{
+  background-color: black;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  list-style: none;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  display: block; /* Make links block-level elements */
+  width: 100%; /* Ensure they occupy the full width of the parent */
+  height: 100%; /* Ensure they occupy the full height of the parent */
+  padding: 10px; /* Space inside links */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+}
+
+nav a:hover {
+  background-color: white; /* Background color on hover */
+  color: black; /* Text color on hover */
+}
+
+nav li {
+  text-align: center;
+  position: relative; /* Ensure the parent can contain the child */
+  
+}
+
+#grid-1 {
+  position: relative;
+}
+
+#grid-1 h1{
+  margin-bottom: 30px;
+}
+
+ul, a {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#transparent-window {
+  color: #3F8EFC;
+  background-color: rgba(252, 252, 252, 0.689);
+  padding: 10px;
+  position: absolute;
+  top: 25%;
+  left: 5%;
+  width: 190px;
+  font-size: 16px;  
+}
+
+button {
+  background-color: #3F8EFC;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-left: 10%;
+}
+
+#amor {
+  width: 80%;
+  height: auto;
+  margin: auto;
+}
+
+.title {
+  background-color: red;
+}
+
+#upgrades-comments-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#upgrades-div {
+  display: grid;  
+}
+
+#blue-boxes-container {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.blue-box {
+  background-color: #3F8EFC;
+  padding: 10px;
+  margin: 10px;
+}
+
+.blue-box p {
+  background-color: white;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+.blue-box img {
+  display: block;
+  margin: 0 auto;
+}
+
+.blue-box a {
+  color: black;
+}
+
+#lu-comments {
+  font-size: large;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+#lu-comments ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+footer {
+  margin-top: 50px;
+}
+
+footer a {
+  color: black;
+}
+
+/* Adjust the image size for medium screens */
+
+@media screen and (max-width: 900px){
+
+  #grid-1 h1{
+    margin-bottom: 40px;
+  }
+
+  #transparent-window {
+    padding-top: 0;
+    top: 15%;
+    left: 5%;
+    width: 190px;
+    font-size: 14px;    
+  }
+
+  button {
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-left: 20%;
+  }
+
+  #amor {
+    width: 90%;
+  }
+
+  #upgrades-comments-grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  #vehicle-details-display {
+    display: block;
+  }
+
+  #vehicle-details {
+    margin: 10px;
+    padding: 5px;
+    width: 90%;
+  }
+
+}
+
+/* Adjust the image size for small screens */
+@media screen and (max-width: 700px){
+
+  #grid-1 h1{
+    margin-bottom: 70px;
+    font-size: 26px;
+  }
+
+  #transparent-window {
+    top: 25%;
+    left: 5%;
+    width: 180px;
+    font-size: 14px;    
+  }
+
+  #amor {
+    width: 100%;
+  }
+
+  #vehicle-details {
+    margin: 5px;
+    padding: 5px;
+  }
+
+  #loginForm {
+    padding: 10px; /* Adjust padding for smaller screens */
+    width: 90%; /* Make sure the form is not too wide */
+    margin: 0 auto; /* Center the form */
+  }
+
+  body {
+    width: 80%;
+  }
+
+  #wrapper {
+    width: 100%;
+  }
+
+  #sub-wrapper {
+    width: 100%;
+
+  }
+
+  nav ul{
+    display: inline-block;
+  }
+
+  nav li {
+    border: solid white 0.5px;
+  }
+
+}
+
+@media screen and (max-width: 500px){
+  #blue-boxes-container {
+    display: inline-block;
+  }
 }
