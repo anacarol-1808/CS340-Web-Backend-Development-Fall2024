@@ -193,7 +193,6 @@ footer a {
 }
 
 /* Adjust the image size for medium screens */
-
 @media screen and (max-width: 900px){
 
   #grid-1 h1{
