@@ -246,15 +246,6 @@ UPDATE public.inventory
 SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
 WHERE inv_model = 'Hummer';
 
--- Task 5. Use an inner join to select the "make and model" fields from the inventory table 
--- and the "classification name" field from the classification table for inventory items that 
--- belong to the "Sport" category.
-SELECT inv_make, inv_model, classification_name
-FROM public.inventory i
-INNER JOIN public.classification c
-    ON c.classification_id = i.classification_id
-WHERE c.classification_name = 'Sport';
-
 -- Task 6. Update all records in the inventory table to add "/vehicles" to the middle 
 -- of the file path in the inv_image and inv_thumbnail columns using a single query.
 -- When done the path for both inv_image and inv_thumbnail 
