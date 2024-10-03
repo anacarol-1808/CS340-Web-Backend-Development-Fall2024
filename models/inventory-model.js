@@ -25,4 +25,20 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+/* ***************************
+ *  Week 03 - Get data for a specific vehicle in inventory (using inv_id)
+ * ************************** */
+async function getInvDetail(inv_id) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory 
+      WHERE inv_id = $1`,
+      [inv_id]
+    )
+    return data.rows[0]
+  } catch (error) {
+    console.error("getInvDetail error" + error)
+  }
+}
+
 module.exports = {getClassifications, getInventoryByClassificationId}

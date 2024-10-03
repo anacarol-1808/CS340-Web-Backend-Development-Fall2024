@@ -59,6 +59,47 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+/* **************************************
+* Week 03 - Constructs the inventory detail view HTML
+* ************************************ */
+Util.buildInvDetailView = async function (vehicle) {
+  let grid
+  if(vehicle){
+    grid = '<div id="vehicle-details-display">'
+    let leftDiv = '<div id="vehicle-image">'
+    leftDiv += '<img src="' + vehicle.inv_image 
+    +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+    +' on CSE Motors" />' + '</div>'
+    grid += leftDiv
+    let rightDiv = '<div id="vehicle-details">'
+    rightDiv += '<span class="bold">' + vehicle.inv_make + ' '
+    rightDiv += vehicle.inv_model + ' Details' + '</span>'
+    let price = parseInt(vehicle.inv_price, 10)
+    rightDiv += '<p>' + '<span class="bold">Price: </span>' 
+    rightDiv += price.toLocaleString("en-US", {style:"currency", currency:"USD", minimumFractionDigits: 0}) 
+    rightDiv += '</p>'
+    rightDiv += '<p>' + '<span class="bold">Description: </span>' + vehicle.inv_description
+    rightDiv += '</p>'
+    rightDiv += '<p>' + '<span class="bold">Color: </span>' + vehicle.inv_color
+    rightDiv += '</p>'
+    rightDiv += '<p>' +  '<span class="bold">Miles: </span>' + parseInt(vehicle.inv_miles, 10).toLocaleString('en-US')
+    rightDiv += '</p>'
+    rightDiv += '</div>'
+    grid += rightDiv
+    grid += '</div>'
+  } else {
+    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+  return grid
+}
+
+/* **************************************
+* Week 03 - Constructs the intentional error view
+* ************************************ */
+Util.buildIntentionalErrorView = async function () {
+  
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
