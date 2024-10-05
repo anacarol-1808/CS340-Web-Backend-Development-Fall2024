@@ -29,7 +29,7 @@ invCont.buildInvDetail = async function (req, res, next) {
   let nav = await utilities.getNav()
   const make = data?.inv_make
   const model = data?.inv_model
-  res.render("./inventory/classification", {
+  res.render("./inventory/detail", {
     title: make + " " + model,
     nav,
     detail,
