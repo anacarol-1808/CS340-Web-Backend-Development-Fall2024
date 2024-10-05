@@ -45,6 +45,8 @@ app.use(async (err, req, res, next) => {
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   if(err.status == 404){ 
     message = err.message
+  } else if (err.status === 500) {
+    message = err.message
   } else {
     message = 'Oh no! There was a crash. Maybe try a different route?'
     errorImage = '<img src="/images/site/crash.jpg" alt="carCrash">'
