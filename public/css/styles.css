@@ -238,6 +238,12 @@ footer a {
   width: 70%;
 }
 
+.notice {
+  color: red;
+  font-weight: 900;
+  font-size: large;
+}
+
 /* Adjust the image size for medium screens */
 @media screen and (max-width: 900px){
 
