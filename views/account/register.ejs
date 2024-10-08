@@ -1,0 +1,51 @@
+<!-- The Content Heading -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<!-- A Message Block     -->
+<%- messages() %>
+
+<!-- Register Form -->
+<form id="loginForm" action="/account/register" method="post">
+    <label for="accountFirstname">First name:</label>
+    <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>"> 
+    
+    <label for="accountLastname">Last name:</label>
+    <input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>">
+
+    <label for="accountEmail">Email address:</label>
+    <input type="email" name="account_email" id="accountEmail" required value="<%= locals.account_email %>">
+
+    <label for="accountPassword">Password:</label>
+    <input type="password" name="account_password" id="accountPassword" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
+    <label id="togglePassword" for="togglePassword">
+        Show Password <input type="checkbox" id="togglePassword"> 
+    </label>
+    <div>Password requirements:
+        <ul>
+            <li>at least 12 characters</li>
+            <li>at least 1 number</li>
+            <li>at least 1 lowercase letter</li>
+            <li>at least 1 capital letter</li>
+            <li>at least 1 non-alphanumeric character</li>
+        </ul> 
+    </div>
+
+    <button type="submit" id="lo">Register</button>
+</form>
+
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('accountPassword');
+    
+    togglePassword.addEventListener('click', function() {
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+        }
+    });
+</script>

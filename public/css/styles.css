@@ -244,6 +244,62 @@ footer a {
   font-size: large;
 }
 
+form {
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 100%;
+  width: 100%; /* Ensure form takes full width of its container */
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+#loginBtn {
+  margin-top: 15px;
+}
+
+#loginForm {
+  width: 100%;
+  max-width: 300px; /* Ensure the form has a maximum width */
+  box-sizing: border-box;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #0059b8;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2e93ff;
+  color: rgb(0, 0, 82);
+}
+
+#pForm {
+  margin: auto;
+  text-align: center;
+}
+
+#togglePassword {
+  text-align: center;
+  vertical-align: center;
+}
+
 /* Adjust the image size for medium screens */
 @media screen and (max-width: 900px){
 
