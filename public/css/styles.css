@@ -300,6 +300,18 @@ button:hover {
   vertical-align: center;
 }
 
+/* insert your own styles for invalid form input */
+input:required:invalid, input:focus:invalid {
+  border: 2px solid #FF5656; /* Red border for invalid input */
+  color: #FF5656; /* Red text color for invalid input */
+}
+
+/* insert your own styles for valid form input */ 
+input:required:valid {
+  border: 2px solid #4CAF50; /* Green border for valid input */
+  color: #4CAF50; /* Green text color for valid input */
+}
+
 /* Adjust the image size for medium screens */
 @media screen and (max-width: 900px){
 

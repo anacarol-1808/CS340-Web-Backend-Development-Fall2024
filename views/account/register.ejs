@@ -7,6 +7,14 @@
 
 <!-- A Message Block     -->
 <%- messages() %>
+<!-- Registration View Error Display (week 04)-->
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
 
 <!-- Register Form -->
 <form id="loginForm" action="/account/register" method="post">
