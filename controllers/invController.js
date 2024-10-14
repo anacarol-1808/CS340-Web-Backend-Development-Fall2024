@@ -36,4 +36,64 @@ invCont.buildInvDetail = async function (req, res, next) {
   })
 }
 
+/* ***************************
+ *  Week 04 - Render the management view
+ * ************************** */
+invCont.renderManagementView = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./inventory/management", {
+    title: "Inventory Management",
+    nav,
+    errors: null,
+  })
+}
+
+/* ***************************
+ *  Week 04 - Render the addClassification view
+ * ************************** */
+invCont.renderAddClassification = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./inventory/add-classification", {
+    title: "Add New Classification",
+    nav,
+    errors: null,
+  })
+}
+
+/* ***************************
+ *  Week 04 - Handle the form submission for Add Classification
+ * ************************** */
+invCont.addClassification = async function (req, res, next) {
+  let nav = await utilities.getNav() 
+  const { classification_name} = req.body
+
+  try{
+      // Check if the classification already exists
+      const classificationExists = await invModel.checkExistingClassification(classification_name)
+
+      if (classificationExists) {
+      req.flash("error", "Classification name already exists. Please choose a different name.")
+      res.render("/inv/add-classification", {
+        title: "Add New Classification",
+        classification_name,
+        nav,
+        errors: [{ msg: 'Classification name already exists.' }]
+        })
+      }
+
+      // Insert the new classification into the database
+      const result = await invModel.insertNewClassification({ classification_name })
+
+      // Handle success response
+      req.flash('success', 'Classification added successfully!')
+      res.redirect('/inv/add-classification');
+  } catch (error) {
+      console.error("Error processing new classification:", error);  // Log the exact error
+      req.flash("error", "There was an error processing your request.");
+      res.redirect('/inv/add-classification');
+  }
+  
+}
+
+
 module.exports = invCont

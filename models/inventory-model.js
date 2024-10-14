@@ -41,4 +41,43 @@ async function getInvDetail(inv_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInvDetail}
+/* ***************************
+ *  Week 04 - Function to check if a classification name exists
+ * ************************** */
+async function checkExistingClassification(classification_name) {
+  const query = `
+      SELECT * FROM classification WHERE classification_name = $1`;
+  const values = [classification_name];
+
+  try {
+      const { rows } = await pool.query(query, values);
+      return rows.length > 0; // Returns true if classification exists, otherwise false
+  } catch (error) {
+      throw error;
+  }
+}
+
+/* ***************************
+ *  Week 04 - Function to insert a new classification into the database
+ * ************************** */
+async function insertNewClassification(newClassification) {
+  const {classification_name} = newClassification;
+
+  const query = `INSERT INTO classification (classification_name)
+  VALUES ($1)
+  RETURNING *`;
+
+  const values = [classification_name]
+
+  try {
+      const {rows} = await pool.query(query, values)
+      return rows[0] // Return the inserted row if needed
+  } catch (error) {
+      throw error;
+  }
+
+}
+
+
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInvDetail, checkExistingClassification, insertNewClassification}
