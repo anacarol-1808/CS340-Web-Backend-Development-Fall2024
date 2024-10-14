@@ -28,6 +28,16 @@ router.post("/add-classification",
     utilities.handleErrors(invController.addClassification)
 );
 
+// Week 04 - Render new vehicle form
+router.get("/addInventory", 
+    utilities.handleErrors(invController.renderNewVehicleView))
+
+// Week 04 - Process the addition of a new vehicle
+router.post("/addInventory", 
+    validate.inventoryRules(), 
+    validate.checkInventoryData, 
+    utilities.handleErrors(invController.processNewVehicle))
+
 
 
 module.exports = router;

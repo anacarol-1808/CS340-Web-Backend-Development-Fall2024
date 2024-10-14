@@ -78,6 +78,62 @@ async function insertNewClassification(newClassification) {
 
 }
 
+/* ***************************
+ *  Week 04 - Insert New Vehicle
+ * ************************** */
+async function insertNewVehicle(newVehicle) {
+  const {
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color
+  } = newVehicle;
+
+  const query = `
+  INSERT INTO inventory (
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color
+  )
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+  RETURNING *`
+
+  const values = [
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color
+  ];
+
+  try {
+      const { rows } = await pool.query(query, values)
+      return rows[0] // Return the inserted row if needed
+  } catch (error) {
+      console.error("insertNewVehicle error", error)
+      throw error
+  }
+  
+}
 
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInvDetail, checkExistingClassification, insertNewClassification}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInvDetail, checkExistingClassification, insertNewClassification, insertNewVehicle}

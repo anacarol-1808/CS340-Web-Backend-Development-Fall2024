@@ -1,0 +1,56 @@
+<% if (title) { %> 
+    <h1><%= title %></h1>
+<% } else {  
+    res.redirect('/') 
+} %>
+
+<!-- message -->
+<%- messages()  %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+
+<!-- form -->
+<form id="newVehicleForm" action="/inv/addInventory" method="post">
+    <fieldset>
+        <%- classificationList %>
+
+        <label for="make">Make</label>
+        <input type="text" id="make" name="inv_make" pattern="[a-zA-Z]{3,}" required placeholder="Min of 3 characters" value="<%= locals.inv_make || '' %>">
+        
+        <label for="model">Model</label>
+        <input type="text" id="model" name="inv_model" pattern="[a-zA-Z]{3,}" required placeholder="Min of 3 characters" value="<%= locals.inv_model || '' %>">
+        
+        <label for="description">Description</label>
+        <input type="text" id="description" name="inv_description" required value="<%= locals.inv_description || '' %>">
+
+        <label for="image">Image Path</label>
+        <input type="text" id="imagePath" name="inv_image" required placeholder="/images/vehicles/no-image.png" value="/images/vehicles/no-image.png">
+
+        <label for="image">Thumbnail Path</label>
+        <input type="text" id="thumbnailPath" name="inv_thumbnail" required placeholder="/images/vehicles/no-image.png" value="/images/vehicles/no-image.png">
+        
+        <label for="price">Price</label>
+        <input type="number" id="price" name="inv_price" step="any" required placeholder="decimal or integer" value="<%= locals.inv_price || '' %>">
+
+        <label for="year">Year</label>
+        <input type="number" id="year" name="inv_year" pattern="\d{4}" required placeholder="4-digit year" value="<%= locals.inv_year || '' %>">
+
+        <label for="miles">Miles</label>
+        <input type="number" id="miles" name="inv_miles" required pattern="\d+" placeholder="digits only" value="<%= locals.inv_miles || '' %>">
+
+        <label for="color">Color</label>
+        <input type="text" id="color" name="inv_color" required pattern="[a-zA-Z]+" value="<%= locals.inv_color || '' %>">
+
+        <br>
+        <button type="submit" id="addVehicle">Add Vehicle</button>
+
+        
+                
+    </fieldset>
+</form>
