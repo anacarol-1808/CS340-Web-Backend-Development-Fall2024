@@ -20,15 +20,15 @@ router.post(
     utilities.handleErrors(accountController.registerAccount)
   )
 
-// Temporary code 
-// Process the login attempt
+// week 05 - Process the login attempt
 router.post(
   "/login",
   regValidate.loginRules(),
   regValidate.checkLoginData,
-  (req, res) => {
-    res.status(200).send('login process')
-  }
+  utilities.handleErrors(accountController.accountLogin)
 )
+
+// week 05 - Default route for account management view
+router.get("/", utilities.handleErrors(accountController.renderAccountManagement));
 
 module.exports = router;

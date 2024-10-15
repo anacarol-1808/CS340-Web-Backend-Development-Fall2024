@@ -1,6 +1,8 @@
 // This file will hold functions that are "utility" in nature, meaning that we will reuse them over and over, but they don't directly belong to the M-V-C structure.
 const invModel = require("../models/inventory-model")
 const Util = {}
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -122,6 +124,28 @@ Util.buildClassificationList = async function (classification_id = null) {
   return classificationList
 }
 
+/* ****************************************
+* week 05 - Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+   jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, accountData) {
+     if (err) {
+      req.flash("Please log in")
+      res.clearCookie("jwt")
+      return res.redirect("/account/login")
+     }
+     res.locals.accountData = accountData
+     res.locals.loggedin = 1
+     next()
+    })
+  } else {
+   next()
+  }
+ }
 
 /* ****************************************
  * Middleware For Handling Errors
