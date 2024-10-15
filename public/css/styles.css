@@ -312,6 +312,46 @@ input:required:valid {
   color: #4CAF50; /* Green text color for valid input */
 }
 
+/* Style for the table */
+table {
+  width: 60%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+  background-color: #FFFFFF; /* White background */
+  color: #000000; /* Black text */
+}
+
+/* Style for table header */
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #808080; /* Gray border */
+}
+
+/* Style for table rows */
+tr:nth-child(even) {
+  background-color: #F2F2F2; /* Light gray for alternating rows */
+}
+
+/* Style for table header text */
+th {
+  background-color: #3F8EFC; /* Primary color for header */
+  color: #FFFFFF; /* White text in header */
+}
+
+/* Style for links in the table */
+a {
+  color: #3F8EFC; /* Primary color for links */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #000000; /* Black color on hover */
+}
+
+
 /* Adjust the image size for medium screens */
 @media screen and (max-width: 900px){
 

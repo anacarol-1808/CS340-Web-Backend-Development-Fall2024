@@ -37,13 +37,15 @@ invCont.buildInvDetail = async function (req, res, next) {
 }
 
 /* ***************************
- *  Week 04 - Render the management view
+ *  Week 04 - Render the inventory management view
  * ************************** */
 invCont.renderManagementView = async function (req, res, next) {
   let nav = await utilities.getNav()
+  const classificationSelect = await utilities.buildClassificationList()
   res.render("./inventory/management", {
     title: "Inventory Management",
     nav,
+    classificationSelect,
     errors: null,
   })
 }
@@ -165,6 +167,17 @@ invCont.processNewVehicle = async function (req, res, next) {
   }
 }
 
-
+/* ***************************
+ *  week 05 - Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
 
 module.exports = invCont

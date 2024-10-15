@@ -38,6 +38,7 @@ router.post("/addInventory",
     validate.checkInventoryData, 
     utilities.handleErrors(invController.processNewVehicle))
 
-
+// week 05 - Route to the URL in the Javascript file 'inventory.js'
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
 module.exports = router;
