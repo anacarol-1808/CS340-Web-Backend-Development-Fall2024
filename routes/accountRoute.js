@@ -29,6 +29,6 @@ router.post(
 )
 
 // week 05 - Default route for account management view
-router.get("/", utilities.handleErrors(accountController.renderAccountManagement));
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.renderAccountManagement));
 
 module.exports = router;
