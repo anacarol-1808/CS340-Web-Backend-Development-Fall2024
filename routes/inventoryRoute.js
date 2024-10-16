@@ -41,4 +41,14 @@ router.post("/addInventory",
 // week 05 - Route to the URL in the Javascript file 'inventory.js'
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
+// week 05 - Route to render the Editing Inventory View
+router.get("/edit/:inv_id", utilities.handleErrors(invController.renderEditInventoryView))
+
+// week 05 - Route to handle the inventory update request
+router.post("/update/", 
+    validate.inventoryRules(),
+    validate.checkUpdateData,
+    utilities.handleErrors(invController.updateInventory))
+
+
 module.exports = router;
