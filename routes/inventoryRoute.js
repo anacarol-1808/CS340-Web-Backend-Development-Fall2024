@@ -50,5 +50,16 @@ router.post("/update/",
     validate.checkUpdateData,
     utilities.handleErrors(invController.updateInventory))
 
+// week 05 - Route to render the Delete Inventory View request
+router.get("/delete/:inv_id", 
+    //utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.renderDeleteInventoryView))
+
+// week 05 - Route to Handle the inventory delete request
+router.post("/deleteVehicle",
+    //utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.deleteInventory)
+)
+
 
 module.exports = router;
