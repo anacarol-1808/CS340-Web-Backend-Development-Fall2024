@@ -39,4 +39,20 @@ async function getAccountByEmail (account_email) {
   }
 }
 
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail}
+/* *****************************
+* week 05 - Return account data using id
+* ***************************** */
+async function getAccountById(account_id) {
+  try {
+    const query = `SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password 
+                   FROM account 
+                   WHERE account_id = $1`;
+    const result = await pool.query(query, [account_id]);
+    return result.rows[0]; // return the first row (user data)
+  } catch (error) {
+    console.error("Error fetching account by ID:", error);
+    throw error;
+  }
+}
+
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById}

@@ -16,48 +16,60 @@ router.get("/detail/:invId", utilities.handleErrors(invController.buildInvDetail
 router.get("/error-trigger", utilities.handleErrors(baseController.buildIntentionalError));
 
 // Week 04 - Route to render management view
-router.get("/", utilities.handleErrors(invController.renderManagementView));
+router.get("/",
+    utilities.checkAdminOrEmployee, 
+    utilities.handleErrors(invController.renderManagementView));
 
 // Week 04 - Route to render add new classification view
-router.get("/add-classification", utilities.handleErrors(invController.renderAddClassification));
+router.get("/add-classification", 
+    utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.renderAddClassification));
 
 // Week 04 - Route to handle form submission for adding classificaiton
 router.post("/add-classification", 
     validate.classificationRules(),
     validate.checkClassificationData,
+    utilities.checkAdminOrEmployee,
     utilities.handleErrors(invController.addClassification)
 );
 
 // Week 04 - Render new vehicle form
 router.get("/addInventory", 
+    utilities.checkAdminOrEmployee,
     utilities.handleErrors(invController.renderNewVehicleView))
 
 // Week 04 - Process the addition of a new vehicle
 router.post("/addInventory", 
     validate.inventoryRules(), 
     validate.checkInventoryData, 
+    utilities.checkAdminOrEmployee,
     utilities.handleErrors(invController.processNewVehicle))
 
 // week 05 - Route to the URL in the Javascript file 'inventory.js'
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory/:classification_id",
+    utilities.checkAdminOrEmployee, 
+    utilities.handleErrors(invController.getInventoryJSON))
 
 // week 05 - Route to render the Editing Inventory View
-router.get("/edit/:inv_id", utilities.handleErrors(invController.renderEditInventoryView))
+router.get("/edit/:inv_id", 
+    utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.renderEditInventoryView))
 
 // week 05 - Route to handle the inventory update request
 router.post("/update/", 
     validate.inventoryRules(),
     validate.checkUpdateData,
+    utilities.checkAdminOrEmployee,
     utilities.handleErrors(invController.updateInventory))
 
 // week 05 - Route to render the Delete Inventory View request
 router.get("/delete/:inv_id", 
-    //utilities.checkAdminOrEmployee,
+    utilities.checkAdminOrEmployee,
     utilities.handleErrors(invController.renderDeleteInventoryView))
 
 // week 05 - Route to Handle the inventory delete request
 router.post("/deleteVehicle",
-    //utilities.checkAdminOrEmployee,
+    utilities.checkAdminOrEmployee,
     utilities.handleErrors(invController.deleteInventory)
 )
 

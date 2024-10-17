@@ -96,6 +96,11 @@ async function accountLogin(req, res) {
   try {
    if (await bcrypt.compare(account_password, accountData.account_password)) {
    delete accountData.account_password
+
+   // Save user data to session (week 05) --> This is necessary to use the conditional statement inside the header partial view
+   req.session.loggedIn = true;
+   req.session.user = accountData;
+
    const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
    if(process.env.NODE_ENV === 'development') {
      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })

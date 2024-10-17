@@ -46,6 +46,8 @@ invCont.renderManagementView = async function (req, res, next) {
     title: "Inventory Management",
     nav,
     classificationSelect,
+    loggedIn: req.session.loggedIn,
+    user: req.session.user,
     errors: null,
   })
 }
@@ -58,6 +60,8 @@ invCont.renderAddClassification = async function (req, res, next) {
   res.render("./inventory/add-classification", {
     title: "Add New Classification",
     nav,
+    loggedIn: req.session.loggedIn,
+    user: req.session.user,
     errors: null,
   })
 }
@@ -78,6 +82,8 @@ invCont.addClassification = async function (req, res, next) {
       res.render("/inv/add-classification", {
         title: "Add New Classification",
         classification_name,
+        loggedIn: req.session.loggedIn,
+        user: req.session.user,
         nav,
         errors: [{ msg: 'Classification name already exists.' }]
         })
@@ -115,6 +121,8 @@ invCont.renderNewVehicleView = async function (req, res, next) {
           nav,
           classificationList, // Pass the classifications to the template
           locals: req.body || {}, // Pass the body for sticky fields
+          loggedIn: req.session.loggedIn,
+          user: req.session.user,
           errors: null
       });
   } catch (error) {
@@ -193,6 +201,8 @@ invCont.renderEditInventoryView = async function (req, res, next) {
     title: "Edit " + itemName,
     nav,
     classificationList: classificationList,
+    loggedIn: req.session.loggedIn,
+    user: req.session.user,
     errors: null,
     inv_id: itemData.inv_id,
     inv_make: itemData.inv_make,
@@ -252,6 +262,8 @@ invCont.updateInventory = async function (req, res, next) {
     title: "Edit " + itemName,
     nav,
     classificationSelect: classificationSelect,
+    loggedIn: req.session.loggedIn,
+    user: req.session.user,
     errors: null,
     inv_id,
     inv_make,
@@ -279,6 +291,8 @@ invCont.renderDeleteInventoryView = async function (req, res, next) {
   res.render("./inventory/delete-confirm", {
     title: "Delete " + itemName,
     nav,
+    loggedIn: req.session.loggedIn,
+    user: req.session.user,
     errors: null,
     inv_id: itemData.inv_id,
     inv_make: itemData.inv_make,
@@ -307,6 +321,8 @@ invCont.deleteInventory = async function (req, res, next) {
       res.render("./inventory/delete-confirm", {
           title: "Delete " + itemName,
           nav,
+          loggedIn: req.session.loggedIn,
+          user: req.session.user,
           errors: null,
           inv_id: itemData.inv_id,
           inv_make: itemData.inv_make,

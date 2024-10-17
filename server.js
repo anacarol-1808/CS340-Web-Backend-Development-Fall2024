@@ -44,6 +44,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(cookieParser())
 app.use(utilities.checkJWTToken)
+// Week 05 Node passes loggedIn variable to EJS template
+app.use((req, res, next) => {
+  res.locals.loggedIn = req.session && req.session.loggedIn
+  res.locals.user = req.session.user
+  next()
+})
 
 /* ***********************
  * View Engine and Templates
