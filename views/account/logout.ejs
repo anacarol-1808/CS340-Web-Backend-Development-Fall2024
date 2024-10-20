@@ -1,0 +1,23 @@
+<!-- The Content Heading -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<!-- A Message Block     -->
+<%- messages() %>
+
+<!-- Logout View Error Display -->
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<!-- Logout Form -->
+<form id="loginForm" action="/account/logout" method="post">
+    <button type="submit" id="loginBtn">Login</button>
+</form>

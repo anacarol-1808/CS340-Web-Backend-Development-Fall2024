@@ -53,4 +53,9 @@ router.post("/update-password/:accountId",
   utilities.handleErrors(accountController.updatePassword)
 );
 
+// Week 05 - Process the logout attempt
+router.post("/logout", 
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.accountLogout));
+
 module.exports = router;

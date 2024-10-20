@@ -268,6 +268,30 @@ async function updatePassword(req, res, next) {
   }
 }
 
+/* ****************************************
+ * Week 05 - Handle the logout process
+ **************************************** */
+async function accountLogout(req, res, next) {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return next(err); // Forward the error to the error handler
+    }
+
+    // Clear the JWT cookie
+    res.clearCookie("jwt");
+
+    // Set a flash message to notify the user they successfully logged out
+    //req.flash("notice", "You have successfully logged out.");
+
+    // Redirect to the home page
+    return res.redirect("/");
+
+  });
+}
+
+
+
 
 module.exports = { 
   buildLogin, 
@@ -277,4 +301,5 @@ module.exports = {
   renderAccountManagement, 
   renderUpdateAccountView, 
   processUpdateAccount,
-  updatePassword}
+  updatePassword,
+  accountLogout}
