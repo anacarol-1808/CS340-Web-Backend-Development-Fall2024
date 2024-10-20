@@ -29,6 +29,28 @@ router.post(
 )
 
 // week 05 - Default route for account management view
-router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.renderAccountManagement));
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.renderAccountManagement))
+
+// Week 05 - Route to render the update account view
+router.get("/update/:accountId", 
+  utilities.checkLogin, 
+  utilities.handleErrors(accountController.renderUpdateAccountView)
+);
+
+// Week 05 - Route to process the update account form
+router.post("/update/:accountId", 
+  utilities.checkLogin,
+  regValidate.updateAccountRules(),
+  regValidate.checkUpdateData,
+  utilities.handleErrors(accountController.processUpdateAccount)
+);
+
+// Week 05 - Route to process the update password form
+router.post("/update-password/:accountId", 
+  utilities.checkLogin,
+  regValidate.updatePasswordRules(),
+  regValidate.checkPasswordData,
+  utilities.handleErrors(accountController.updatePassword)
+);
 
 module.exports = router;

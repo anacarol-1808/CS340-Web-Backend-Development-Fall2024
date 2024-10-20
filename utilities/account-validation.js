@@ -122,4 +122,107 @@ validate.checkLoginData = async (req, res, next) => {
   }
   next()
 }
-  module.exports = validate
+
+/* ******************************
+ * week 05 - Check update data and make sure email doesnt exists or is the same that the user already had
+ * ***************************** */
+validate.updateAccountRules = () => {
+  return [
+    // firstname is required and must be a string
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .withMessage("Please provide a first name."),
+    
+    // lastname is required and must be a string
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 2 })
+      .withMessage("Please provide a last name."),
+    
+    // email must be valid and cannot already exist in the database, excluding the current user's email
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+      .custom(async (account_email, { req }) => {
+        const currentAccountId = req.params.accountId; // Get the current account ID
+        const emailExists = await accountModel.checkExistingEmail(account_email);
+        const account = await accountModel.getAccountById(currentAccountId); // Get the current user's account
+
+        if (emailExists && account.account_email !== account_email) {
+          throw new Error("Email already exists. Please use a different email.");
+        }
+      })
+  ];
+};
+
+/* ******************************
+ * week 05 - Check data and return errors or continue to registration
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { account_firstname, account_lastname, account_email } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/update", {
+      errors,
+      title: "Update Account Information",
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
+    })
+    return
+  }
+  next()
+}
+
+/* ******************************
+ * week 05 - Update Password Validation
+ * ***************************** */
+validate.updatePasswordRules = () => {
+  return [
+    // password must be strong if provided
+    body("account_password")
+      .notEmpty() // Make sure the password is provided
+      .withMessage("Please provide a password.")
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet the requirements.")
+  ];
+};
+
+/* ******************************
+ * Check Password Validation Results
+ * ***************************** */
+validate.checkPasswordData = async (req, res, next) => {
+  const { account_password } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("account/update", {
+      errors,
+      title: "Update Account Information",
+      nav,
+      account_password,
+    });
+    return;
+  }
+  next();
+};
+
+
+module.exports = validate

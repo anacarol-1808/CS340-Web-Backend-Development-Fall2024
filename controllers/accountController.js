@@ -115,14 +115,166 @@ async function accountLogin(req, res) {
  }
 
 /* ****************************************
-* week 05 - Deliver the account management view
+* week 05 - Render the account management view
 * *************************************** */
 async function renderAccountManagement(req, res, next) {   
-  let nav = await utilities.getNav() 
+  let nav = await utilities.getNav(); 
   res.render("account/management", { 
     title: "Account Management", 
     nav, 
-    errors: null
-  })
+    errors: null,
+    notice: req.flash('notice') // Add this line to pass the flash message
+  });
 }
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, renderAccountManagement}
+
+
+/* ****************************************
+*  week 05 - Render update account view
+* *************************************** */
+async function renderUpdateAccountView(req, res, next) {
+  try {
+      let nav = await utilities.getNav();
+      const accountId = req.params.accountId;
+      const accountData = await accountModel.getAccountById(accountId);
+
+      if (!accountData) {
+          req.flash("notice", "Account not found");
+          return res.redirect("/account/management");
+      }
+
+      res.render("account/update", {
+          title: "Update Account Information",
+          nav,
+          accountData,
+          errors: null,
+          loggedIn: req.session.loggedIn,
+          user: req.session.user
+      });
+  } catch (error) {
+      next(error);
+      console.error("Error rendering update account view:", error);
+  }
+}
+
+/* ****************************************
+*  week 05 - Handle the update account process
+* *************************************** */
+async function processUpdateAccount(req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    const { accountId } = req.params; // Should be the account ID
+    const { account_firstname, account_lastname, account_email } = req.body; // Get the rest of the data from body
+
+    // Call updateAccount with the correct order of parameters
+    const result = await accountModel.updateAccount(accountId, account_firstname, account_lastname, account_email);
+
+    if (result.rowCount > 0) { // Check if any rows were updated
+      req.flash("notice", "Account information updated successfully");
+      res.status(200).render('account/management', {
+        title: 'Account Management',
+        nav,
+        loggedIn: req.session.loggedIn,
+        user: req.session.user,
+        errors: null,
+      })
+    } else {
+      req.flash("notice", "Failed to update account information");
+      // Re-render the update view with current account data
+      const accountData = await accountModel.getAccountById(accountId);
+      console.log(accountData)
+      res.status(500).render("account/update", {
+        title: "Update Account Information",
+        nav,
+        accountData,
+        errors: null,
+        loggedIn: req.session.loggedIn,
+        user: req.session.user,
+      });
+    }
+  } catch (error) {
+    console.error("Error in processUpdateAccount:", error); // Log any error
+    next(error); // Call the next middleware or error handler
+  }
+}
+
+
+/* ****************************************
+*  week 05 - Handle the password change request
+* *************************************** */
+async function updatePassword(req, res, next) {
+  let nav = await utilities.getNav();
+  const { account_password } = req.body;
+  const { accountId } = req.params; // Get accountId from params
+
+  // Check if a new password is provided
+  if (!account_password) {
+    req.flash("notice", "No password was provided; no changes made to the password.");
+    const updatedAccountData = await accountModel.getAccountById(accountId);
+    
+    return res.status(500).render("account/management", {
+      title: "Account Management",
+      nav,
+      accountData: updatedAccountData,
+      loggedIn: req.session.loggedIn,
+      user: req.session.user,
+      errors: null,
+    });
+  }
+
+  // Hash the password before storing
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(account_password, 10); // Use async version of bcrypt
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the new password.');
+    return res.status(500).render("account/update", {
+      title: "Update Account Information",
+      nav,
+      errors: null,
+      loggedIn: req.session.loggedIn,
+      user: req.session.user,
+    });
+  }
+
+  // Update the password in the database
+  const result = await accountModel.updatePassword(accountId, hashedPassword); // Include accountId in the update
+  
+  if (result) {
+    req.flash("notice", "Congratulations, you've successfully changed your password.");
+    
+    // Fetch updated account data for management view
+    const updatedAccountData = await accountModel.getAccountById(accountId);
+    
+    return res.status(200).render("account/management", {
+      title: "Account Management",
+      nav,
+      accountData: updatedAccountData,
+      loggedIn: req.session.loggedIn,
+      user: req.session.user,
+      errors: null,
+    });
+  } else {
+    req.flash("notice", "Sorry, there was an error trying to update your password.");
+    const updatedAccountData = await accountModel.getAccountById(accountId); // Get updated data
+    
+    return res.status(500).render("account/management", {
+      title: "Account Management",
+      nav,
+      accountData: updatedAccountData,
+      loggedIn: req.session.loggedIn,
+      user: req.session.user,
+      errors: null,
+    });
+  }
+}
+
+
+module.exports = { 
+  buildLogin, 
+  buildRegister, 
+  registerAccount, 
+  accountLogin, 
+  renderAccountManagement, 
+  renderUpdateAccountView, 
+  processUpdateAccount,
+  updatePassword}

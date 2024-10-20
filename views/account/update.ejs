@@ -1,0 +1,57 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else { %>
+    <script>
+        window.location.href = "/";
+    </script>
+    <% } %>
+    
+ <!-- A Message Block     -->
+<%- messages() %>
+
+<!-- Registration View Error Display (week 04)-->
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+    
+    <!-- Account Update Form -->
+    <form action="/account/update/<%= user.account_id %>" method="post">
+        <fieldset>
+          <legend>Account Update</legend>
+    
+          <label for="account_firstname">First Name:</label>
+          <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.accountData ? locals.accountData.account_firstname : user.account_firstname %>" required>
+    
+          <label for="account_lastname">Last Name:</label>
+          <input type="text" id="account_lastname" name="account_lastname" value="<%= locals.accountData ? locals.accountData.account_lastname : user.account_lastname %>" required>
+    
+          <label for="account_email">Email:</label>
+          <input type="email" id="account_email" name="account_email" value="<%= locals.accountData ? locals.accountData.account_email : user.account_email %>" required>
+    
+          <input type="hidden" name="account_id" value="<%= user.account_id %>">
+    
+          <input type="submit" value="Update Account">
+        </fieldset>
+    </form>
+    
+    <!-- Change Password Form -->
+    <form action="/account/update-password/<%= user.account_id %>" method="post">
+        <fieldset>
+          <legend>Change Password</legend>
+    
+          <p>Enter a new password to change your current password. The password must be at least 12 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character.</p>
+          <p>Leave blank if you do not wish to change your password.</p>
+    
+          <label for="account_password">New Password:</label>
+          <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
+    
+          <input type="hidden" name="account_id" value="<%= user.account_id %>">
+    
+          <input type="submit" value="Change Password">
+        </fieldset>
+    </form>
+    

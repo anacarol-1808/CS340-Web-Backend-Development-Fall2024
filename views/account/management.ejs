@@ -7,4 +7,17 @@
 <!-- Flash messages -->
 <%- messages() %>
 
-<p>You are logged in.</p>
+<% if (loggedIn) { %>
+    <h2>Welcome <%= user.account_firstname %></h2>
+
+    <!-- Update Account Information Link -->
+    <p><a href="/account/update/<%= user.account_id %>">Update Account Information</a></p>
+
+    <% if (user.account_type === 'Employee' || user.account_type === 'Admin') { %>
+        <h3>Inventory Management</h3>
+        <p><a href="/inventory/management">Manage Inventory</a></p>
+    <% } %>
+    
+<% } else { %>
+    <p>You are not logged in. Please <a href="/account/login">log in</a>.</p>
+<% } %>
