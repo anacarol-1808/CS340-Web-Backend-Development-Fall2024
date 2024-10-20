@@ -302,14 +302,14 @@ button:hover {
 
 /* insert your own styles for invalid form input */
 input:required:invalid, input:focus:invalid {
-  border: 2px solid #FF5656; /* Red border for invalid input */
-  color: #FF5656; /* Red text color for invalid input */
+  border: 2px solid #aa2020; /* Red border for invalid input */
+  color: #aa2020; /* Red text color for invalid input */
 }
 
 /* insert your own styles for valid form input */ 
 input:required:valid {
-  border: 2px solid #4CAF50; /* Green border for valid input */
-  color: #4CAF50; /* Green text color for valid input */
+  border: 2px solid #2a842e; /* Green border for valid input */
+  color: #2a842e; /* Green text color for valid input */
 }
 
 /* Style for the table */
@@ -342,7 +342,7 @@ th {
 
 /* Style for links in the table */
 a {
-  color: #3F8EFC; /* Primary color for links */
+  color: #1d57a8; /* Primary color for links */
   text-decoration: none;
 }
 
