@@ -272,6 +272,9 @@ async function updatePassword(req, res, next) {
  * Week 05 - Handle the logout process
  **************************************** */
 async function accountLogout(req, res, next) {
+  // Set the flash message before destroying the session
+  req.flash("notice", "You have successfully logged out.");
+  
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
@@ -281,14 +284,11 @@ async function accountLogout(req, res, next) {
     // Clear the JWT cookie
     res.clearCookie("jwt");
 
-    // Set a flash message to notify the user they successfully logged out
-    //req.flash("notice", "You have successfully logged out.");
-
     // Redirect to the home page
     return res.redirect("/");
-
   });
 }
+
 
 
 
