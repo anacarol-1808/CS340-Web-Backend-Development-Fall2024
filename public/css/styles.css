@@ -186,6 +186,7 @@ button {
 
 footer {
   margin-top: 50px;
+  margin: 1em;
 }
 
 footer a {
@@ -239,7 +240,19 @@ footer a {
 }
 
 .notice {
-  color: red;
+  color: rgb(232, 82, 18);
+  font-weight: 900;
+  font-size: large;
+}
+
+.success {
+  color:#277f2b;
+  font-weight: 900;
+  font-size: large;
+}
+
+.error {
+  color:#d02323;
   font-weight: 900;
   font-size: large;
 }

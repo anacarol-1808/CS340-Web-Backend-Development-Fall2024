@@ -6,9 +6,19 @@ const invCont = {}
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
+/* ***************************
+ *  Build inventory by classification view
+ * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
+  
+  // Check if no vehicles are found
+  if (data.length === 0) {
+    req.flash("notice", "There are no vehicles for this classification.")
+    return res.redirect("/") // Redirect to the home page
+  }
+  
   const grid = await utilities.buildClassificationGrid(data)
   let nav = await utilities.getNav()
   const className = data[0].classification_name
@@ -18,6 +28,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
     grid,
   })
 }
+
 
 /* ***************************
  *  Week 03 - Build Inventory Item Detail View
