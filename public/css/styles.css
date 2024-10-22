@@ -351,6 +351,10 @@ a:hover {
   color: #000000; /* Black color on hover */
 }
 
+main {
+  margin: 1em;
+}
+
 
 /* Adjust the image size for medium screens */
 @media screen and (max-width: 900px){

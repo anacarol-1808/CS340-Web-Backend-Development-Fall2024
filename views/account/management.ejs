@@ -8,9 +8,10 @@
 <%- messages() %>
 
 <% if (loggedIn) { %>
-    <h2>Welcome <%= user.account_firstname %></h2>
+    <h2>Welcome, <%= user.account_firstname %>!</h2>
 
     <!-- Update Account Information Link -->
+    <h3>Account Management</h3>
     <p><a href="/account/update/<%= user.account_id %>">Update Account Information</a></p>
 
     <% if (user.account_type === 'Employee' || user.account_type === 'Admin') { %>

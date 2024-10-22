@@ -93,7 +93,11 @@ invCont.addClassification = async function (req, res, next) {
       const result = await invModel.insertNewClassification({ classification_name })
 
       // Handle success response
-      req.flash('success', 'Classification added successfully!')
+      if (result) {
+        req.flash('success', 'Classification added successfully!');
+      } else {
+          req.flash('error', 'Failed to add classification.');
+      }
       res.redirect('/inv/add-classification');
   } catch (error) {
       console.error("Error processing new classification:", error);  // Log the exact error
@@ -165,15 +169,36 @@ invCont.processNewVehicle = async function (req, res, next) {
           inv_color
       });
 
-      // Handle success response
-      req.flash("success", "Vehicle added successfully!");
-      res.redirect("/inv");
+      // Check if the insertion was successful
+      if (result) {
+        req.flash("success", "Vehicle added successfully!");
+      } else {
+        req.flash("error", "Failed to add vehicle.");
+      }
+      res.redirect("/inv/management");
   } catch (error) {
       console.error("Error processing new vehicle:", error);  // Log the exact error
       req.flash("error", "There was an error processing your request.");
-      res.redirect("/inv/addInventory");
+      res.render("./inventory/addInventory", {
+          title: "Add New Vehicle",
+          classification_id,
+          inv_make,
+          inv_model,
+          inv_description,
+          inv_image,
+          inv_thumbnail,
+          inv_price,
+          inv_year,
+          inv_miles,
+          inv_color,
+          nav, 
+          loggedIn: req.session.loggedIn,
+          user: req.session.user,
+          errors: [{ msg: 'There was an error processing your request.' }]
+      });
   }
 }
+
 
 /* ***************************
  *  week 05 - Return Inventory by Classification As JSON
@@ -253,7 +278,7 @@ invCont.updateInventory = async function (req, res, next) {
   if (updateResult) {
     const itemName = updateResult.inv_make + " " + updateResult.inv_model
     req.flash("notice", `The ${itemName} was successfully updated.`)
-    res.redirect("/inv/")
+    res.redirect("/inv/management")
   } else {
     const classificationSelect = await utilities.buildClassificationList(classification_id)
     const itemName = `${inv_make} ${inv_model}`
@@ -313,7 +338,7 @@ invCont.deleteInventory = async function (req, res, next) {
   // Check if the delete was successful
   if (deleteResult) {
       req.flash("success", `The Vehicle was successfully deleted.`);
-      res.redirect("/inv/");
+      res.redirect("/inv/management");
   } else {
       // If delete failed, re-render the delete view with an error message
       const itemName = `${inv_make} ${inv_model}`;
