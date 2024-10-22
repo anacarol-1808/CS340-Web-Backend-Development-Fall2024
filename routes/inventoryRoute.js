@@ -15,8 +15,8 @@ router.get("/detail/:invId", utilities.handleErrors(invController.buildInvDetail
 // Week 03 - Route to trigger the error
 router.get("/error-trigger", utilities.handleErrors(baseController.buildIntentionalError));
 
-// Week 04 - Route to render management view
-router.get("/",
+// Week 04 - Route to render inventory management view
+router.get("/management",
     utilities.checkAdminOrEmployee, 
     utilities.handleErrors(invController.renderManagementView));
 
