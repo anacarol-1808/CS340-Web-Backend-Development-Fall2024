@@ -61,21 +61,22 @@ async function checkExistingClassification(classification_name) {
  *  Week 04 - Function to insert a new classification into the database
  * ************************** */
 async function insertNewClassification(newClassification) {
-  const {classification_name} = newClassification;
+  const {classification_name, account_id} = newClassification;
 
-  const query = `INSERT INTO classification (classification_name)
-  VALUES ($1)
-  RETURNING *`;
+  const query = `
+    INSERT INTO classification 
+    (classification_name, account_id, classification_approved, classification_approval_date)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *`;
 
-  const values = [classification_name]
+  const values = [classification_name, account_id, false, new Date()];
 
   try {
-      const {rows} = await pool.query(query, values)
-      return rows[0] // Return the inserted row if needed
+      const {rows} = await pool.query(query, values);
+      return rows[0]; // Return the inserted row if needed
   } catch (error) {
       throw error;
   }
-
 }
 
 /* ***************************
@@ -92,7 +93,8 @@ async function insertNewVehicle(newVehicle) {
       inv_price,
       inv_year,
       inv_miles,
-      inv_color
+      inv_color,
+      account_id
   } = newVehicle;
 
   const query = `
@@ -106,9 +108,12 @@ async function insertNewVehicle(newVehicle) {
       inv_price,
       inv_year,
       inv_miles,
-      inv_color
+      inv_color,
+      account_id,
+      inv_approved,
+      inv_approved_date
   )
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
   RETURNING *`
 
   const values = [
@@ -121,7 +126,10 @@ async function insertNewVehicle(newVehicle) {
       inv_price,
       inv_year,
       inv_miles,
-      inv_color
+      inv_color,
+      account_id,
+      false,
+      new Date()
   ];
 
   try {

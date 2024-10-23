@@ -81,42 +81,43 @@ invCont.renderAddClassification = async function (req, res, next) {
  *  Week 04 - Handle the form submission for Add Classification
  * ************************** */
 invCont.addClassification = async function (req, res, next) {
-  let nav = await utilities.getNav() 
-  const { classification_name} = req.body
+  let nav = await utilities.getNav();
+  const { classification_name } = req.body;
+  const account_id = req.session.user.account_id; // Get account_id from session
 
-  try{
-      // Check if the classification already exists
-      const classificationExists = await invModel.checkExistingClassification(classification_name)
+  try {
+    // Check if the classification already exists
+    const classificationExists = await invModel.checkExistingClassification(classification_name);
 
-      if (classificationExists) {
-      req.flash("error", "Classification name already exists. Please choose a different name.")
-      res.render("/inv/add-classification", {
+    if (classificationExists) {
+      req.flash("error", "Classification name already exists. Please choose a different name.");
+      return res.render("inv/add-classification", {
         title: "Add New Classification",
         classification_name,
         loggedIn: req.session.loggedIn,
         user: req.session.user,
         nav,
         errors: [{ msg: 'Classification name already exists.' }]
-        })
-      }
+      });
+    }
 
-      // Insert the new classification into the database
-      const result = await invModel.insertNewClassification({ classification_name })
+    // Insert the new classification into the database
+    const result = await invModel.insertNewClassification({ classification_name, account_id });
 
-      // Handle success response
-      if (result) {
-        req.flash('success', 'Classification added successfully!');
-      } else {
-          req.flash('error', 'Failed to add classification.');
-      }
-      res.redirect('/inv/add-classification');
+    // Handle success response
+    if (result) {
+      req.flash('success', 'Classification added successfully!');
+    } else {
+      req.flash('error', 'Failed to add classification.');
+    }
+    res.redirect('/inv/add-classification');
   } catch (error) {
-      console.error("Error processing new classification:", error);  // Log the exact error
-      req.flash("error", "There was an error processing your request.");
-      res.redirect('/inv/add-classification');
+    console.error("Error processing new classification:", error);  // Log the exact error
+    req.flash("error", "There was an error processing your request.");
+    res.redirect('/inv/add-classification');
   }
-  
-}
+};
+
 
 /* ***************************
  *  Week 04 - Render Add New Inventory (Vehicle) View
@@ -165,6 +166,9 @@ invCont.processNewVehicle = async function (req, res, next) {
       inv_color
   } = req.body;
 
+  // Retrieve the account_id from the session
+  const account_id = req.session.user.account_id;
+
   try {
       // Insert the new vehicle into the database
       const result = await invModel.insertNewVehicle({
@@ -177,7 +181,8 @@ invCont.processNewVehicle = async function (req, res, next) {
           inv_price,
           inv_year,
           inv_miles,
-          inv_color
+          inv_color,
+          account_id
       });
 
       // Check if the insertion was successful

@@ -14,6 +14,23 @@ CREATE TABLE public.classification (
     CONSTRAINT classification_pk PRIMARY KEY (classification_id)
 );
 
+-- Add new columns to 'classification' (week 06)
+ALTER TABLE public.classification
+    ADD COLUMN IF NOT EXISTS classification_approved boolean DEFAULT false,
+    ADD COLUMN IF NOT EXISTS account_id integer,
+    ADD COLUMN IF NOT EXISTS classification_approval_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    ADD CONSTRAINT account_id FOREIGN KEY (account_id)
+        REFERENCES public.account (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+CREATE INDEX IF NOT EXISTS fki_account_id
+    ON public.classification USING btree
+    (account_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+
 -- Table structure for 'inventory'
 create table if not exists public.inventory
 (
@@ -30,6 +47,23 @@ create table if not exists public.inventory
     classification_id integer not null,
     constraint iventory_pkey primary key (inv_id)
 );
+
+-- Add new columns to 'inventory' (week 06)
+ALTER TABLE public.inventory
+    ADD COLUMN IF NOT EXISTS inv_approved boolean DEFAULT false,
+    ADD COLUMN IF NOT EXISTS account_id integer,
+    ADD COLUMN IF NOT EXISTS inv_approved_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    ADD CONSTRAINT account_id FOREIGN KEY (account_id)
+        REFERENCES public.account (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+CREATE INDEX IF NOT EXISTS fki_account_id
+    ON public.inventory USING btree
+    (account_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
 
 -- Create Relationship between 'classification' and 'inventory' tables
 ALTER TABLE IF EXISTS public.inventory
