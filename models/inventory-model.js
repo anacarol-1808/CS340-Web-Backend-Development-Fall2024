@@ -8,6 +8,23 @@ async function getClassifications(){
 }
 
 /* ***************************
+ *  Week 06 - Get approved classification data with at least one approved inventory item
+ * ************************** */
+async function getApprovedClassifications() {
+  return await pool.query(`
+    SELECT c.classification_id, c.classification_name 
+    FROM public.classification c
+    JOIN public.inventory i ON c.classification_id = i.classification_id
+    WHERE c.classification_approved = true
+      AND i.inv_approved = true
+    GROUP BY c.classification_id
+    HAVING COUNT(i.inv_id) > 0
+    ORDER BY c.classification_name
+  `)
+}
+
+
+/* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
 async function getInventoryByClassificationId(classification_id) {
@@ -198,6 +215,7 @@ async function updateInventory(
 
 module.exports = {
   getClassifications, 
+  getApprovedClassifications,
   getInventoryByClassificationId, 
   getInvDetail, 
   checkExistingClassification, 

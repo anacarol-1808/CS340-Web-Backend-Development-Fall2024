@@ -6,9 +6,6 @@ const invCont = {}
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
-/* ***************************
- *  Build inventory by classification view
- * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
@@ -110,7 +107,7 @@ invCont.addClassification = async function (req, res, next) {
     } else {
       req.flash('error', 'Failed to add classification.');
     }
-    res.redirect('/inv/add-classification');
+    res.redirect('/inv/management');
   } catch (error) {
     console.error("Error processing new classification:", error);  // Log the exact error
     req.flash("error", "There was an error processing your request.");

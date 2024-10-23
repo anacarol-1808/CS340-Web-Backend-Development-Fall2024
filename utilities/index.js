@@ -9,7 +9,7 @@ const accountModel = require('../models/account-model')
  * Constructs the nav HTML unordered list
  ************************** */
 Util.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications()
+  let data = await invModel.getApprovedClassifications()
   console.log(data)
   let list = "<ul>"
   list += '<li><a href="/" title="Home page">Home</a></li>'
