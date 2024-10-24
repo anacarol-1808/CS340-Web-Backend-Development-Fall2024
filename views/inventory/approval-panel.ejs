@@ -1,0 +1,93 @@
+<% if (title) { %> 
+    <h1><%= title %></h1>
+<% } else {  
+    res.redirect('/') 
+} %>
+
+<!-- message -->
+<%- messages()  %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+
+
+<!-- Classification Approve Form -->
+<form action="/inv/approval-classification/" method="post">
+    <fieldset>
+      <legend>Classifications Pending Approval</legend>
+
+      <label for="classification_name">Classification Name:</label>
+      <input type="text" id="classification_name" name="classification_name" value="<%= locals.classification_name %>" readonly>
+
+      <!-- This should be for the user that created the Classification (taken form the database classification table) -->
+      <label for="created_by">Created by (Original Submitter):</label>
+      <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.user.account_firstname %>" readonly>
+      <input type="text" id="account_lastname" name="account_lastname" value="<%= locals.user.account_lastname %>" readonly>
+      
+      <label for="classification_creation_date">Creation date:</label>
+      <input type="date" id="classification_creation_date" name="classification_creation_date" value="<%= locals.classification_creation_date %>" readonly>
+
+      <input type="hidden" name="classification_id" <% if(locals.classification_id) { %> value="<%= locals.classification_id %>" <%} %>>
+
+      <!-- This should be for the current Admin user that is logged in -->
+      <input type="hidden" name="admin_account_id" value="<%= user.account_id %>"> 
+
+      <button type="submit" name="action" value="approve">Approve</button>
+      <button type="submit" name="action" value="reject">Reject</button>
+    </fieldset>
+</form>
+
+<!-- Inventory Approve Form -->
+<form action="/inv/approval-inventory/" method="post">
+    <fieldset>
+      <legend>Inventory Pending Approval</legend>
+
+      <label for="make">Make</label>
+      <input type="text" id="make" name="inv_make" readonly value="<%= locals.inv_make %>">
+      
+      <label for="model">Model</label>
+      <input type="text" id="model" name="inv_model" readonly value="<%= locals.inv_model %>">
+      
+      <label for="description">Description</label>
+      <input type="text" id="description" name="inv_description" readonly value="<%= locals.inv_description %>">
+
+      <label for="image">Image Path</label>
+      <input type="text" id="imagePath" name="inv_image" readonly value="<%= locals.inv_image %>">
+
+      <label for="image">Thumbnail Path</label>
+      <input type="text" id="thumbnailPath" name="inv_thumbnail" readonly value="<%= locals.inv_thumbnail %>">
+      
+      <label for="price">Price</label>
+      <input type="number" id="price" name="inv_price" readonly value="<%= locals.inv_price %>">
+
+      <label for="year">Year</label>
+      <input type="number" id="year" name="inv_year" readonly value="<%= locals.inv_year %>">
+
+      <label for="miles">Miles</label>
+      <input type="number" id="miles" name="inv_miles" readonly value="<%= locals.inv_miles %>">
+
+      <label for="color">Color</label>
+      <input type="text" id="color" name="inv_color" readonly value="<%= locals.inv_color %>">
+
+      <!-- This should be for the user that created the Inventory (taken form the database inventory table) -->
+      <label for="created_by">Created by (Original Submitter):</label>
+      <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.user.account_firstname %>" readonly>
+      <input type="text" id="account_lastname" name="account_lastname" value="<%= locals.user.account_lastname %>" readonly>
+      
+      <label for="classification_creation_date">Creation date:</label>
+      <input type="date" id="inventory_creation_date" name="inventory_creation_date" value="<%= locals.classification_creation_date %>" readonly>
+
+      <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <%} %>>
+      
+      <!-- This should be for the current Admin user that is logged in -->
+      <input type="hidden" name="admin_account_id" value="<%= user.account_id %>">
+
+      <button type="submit" name="action" value="approve">Approve</button>
+      <button type="submit" name="action" value="reject">Reject</button>
+    </fieldset>
+</form>

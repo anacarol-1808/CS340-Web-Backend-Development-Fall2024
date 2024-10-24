@@ -161,7 +161,7 @@ Util.checkLogin = (req, res, next) => {
 }
 
 /* **************************************************************************************
- *  Middleware function that checks the user's account type using the JWT token (week 11)
+ *  Middleware function that checks the user's account type using the JWT token (week 05)
  * *************************************************************************************** */
 Util.checkAdminOrEmployee = async (req, res, next) => {
   try {
@@ -201,6 +201,49 @@ Util.checkAdminOrEmployee = async (req, res, next) => {
     return res.redirect('/account/login');
   }
 }
+
+/* **************************************************************************************
+ *  week 06 - Middleware function that checks if the user is an Admin using the JWT token
+ * *************************************************************************************** */
+Util.checkAdmin = async (req, res, next) => {
+  try {
+    // Check if there is a token
+    const token = req.cookies.jwt;
+    if (!token) {
+      req.flash("notice", "You must log in to view this page.")
+      return res.redirect('/account/login');
+    }
+    console.log("Token found:", token);
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log("Decoded token:", decoded);
+
+    // Get user data
+    const user = await accountModel.getAccountById(decoded.account_id);
+    console.log("User data:", user);
+
+    // Log the account_type for debugging
+    if (user) {
+      console.log("Account type:", user.account_type);
+    } else {
+      console.log("No user data found for account_id:", decoded.account_id);
+    }
+
+    // Check if the user is an Admin
+    if (user && user.account_type === 'Admin') {
+      next();
+    } else {
+      req.flash("notice", "You do not have the necessary permissions to view this page.");
+      return res.redirect('/account/login');
+    }
+  } catch (error) {
+    console.error("Error in middleware:", error);
+    req.flash("notice", "There was an error when trying to process the request, please try again.");
+    return res.redirect('/account/login');
+  }
+};
+
 
 /* ****************************************
  * Middleware For Handling Errors

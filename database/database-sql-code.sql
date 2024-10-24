@@ -16,19 +16,28 @@ CREATE TABLE public.classification (
 
 -- Add new columns to 'classification' (week 06)
 ALTER TABLE public.classification
+    -- Column for the submitter of the classification
+    ADD COLUMN IF NOT EXISTS submitter_account_id integer,
+    -- Column to track when the classification was created
+    ADD COLUMN IF NOT EXISTS classification_creation_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    -- Modify 'classification_approved' as required (default false, changes to true on approval)
     ADD COLUMN IF NOT EXISTS classification_approved boolean DEFAULT false,
-    ADD COLUMN IF NOT EXISTS account_id integer,
-    ADD COLUMN IF NOT EXISTS classification_approval_date timestamp DEFAULT CURRENT_TIMESTAMP,
-    ADD CONSTRAINT account_id FOREIGN KEY (account_id)
+    -- Column for the approver of the classification
+    ADD COLUMN IF NOT EXISTS approver_account_id integer,
+    -- Column to track approval date
+    ADD COLUMN IF NOT EXISTS classification_approval_date timestamp DEFAULT NULL,
+    -- Foreign key for submitter (points to account_id in the account table)
+    ADD CONSTRAINT submitter_account_id_fk FOREIGN KEY (submitter_account_id)
+        REFERENCES public.account (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    -- Foreign key for approver (points to account_id in the account table)
+    ADD CONSTRAINT approver_account_id_fk FOREIGN KEY (approver_account_id)
         REFERENCES public.account (account_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
-
-CREATE INDEX IF NOT EXISTS fki_account_id
-    ON public.classification USING btree
-    (account_id ASC NULLS LAST)
-    TABLESPACE pg_default;
 
 
 -- Table structure for 'inventory'
@@ -50,20 +59,28 @@ create table if not exists public.inventory
 
 -- Add new columns to 'inventory' (week 06)
 ALTER TABLE public.inventory
+    -- Column for the submitter of the inventory
+    ADD COLUMN IF NOT EXISTS submitter_account_id integer,
+     -- Column to track when the inventory was created
+    ADD COLUMN IF NOT EXISTS inventory_creation_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    -- Column to track inventory approval (default to false)
     ADD COLUMN IF NOT EXISTS inv_approved boolean DEFAULT false,
-    ADD COLUMN IF NOT EXISTS account_id integer,
-    ADD COLUMN IF NOT EXISTS inv_approved_date timestamp DEFAULT CURRENT_TIMESTAMP,
-    ADD CONSTRAINT account_id FOREIGN KEY (account_id)
+    -- Column for the approver of the inventory
+    ADD COLUMN IF NOT EXISTS approver_account_id integer,
+    -- Column to track the approval date (set when admin approves)
+    ADD COLUMN IF NOT EXISTS inventory_approval_date timestamp DEFAULT NULL,
+    -- Foreign key for submitter (points to account_id in the account table)
+    ADD CONSTRAINT submitter_account_id_fk FOREIGN KEY (submitter_account_id)
+        REFERENCES public.account (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    -- Foreign key for approver (points to account_id in the account table)
+    ADD CONSTRAINT approver_account_id_fk FOREIGN KEY (approver_account_id)
         REFERENCES public.account (account_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
-
-CREATE INDEX IF NOT EXISTS fki_account_id
-    ON public.inventory USING btree
-    (account_id ASC NULLS LAST)
-    TABLESPACE pg_default;
-
 
 -- Create Relationship between 'classification' and 'inventory' tables
 ALTER TABLE IF EXISTS public.inventory

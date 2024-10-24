@@ -43,6 +43,27 @@ async function getInventoryByClassificationId(classification_id) {
 }
 
 /* ***************************
+ *  Week 06 - Get all approved inventory items and classification_name by classification_id
+ * ************************** */
+async function getApprovedInventoryByClassificationId(classification_id) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+      JOIN public.classification AS c 
+      ON i.classification_id = c.classification_id 
+      WHERE i.classification_id = $1
+      AND i.inv_approved = true
+      AND c.classification_approved = true`,
+      [classification_id]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getApprovedInventoryByClassificationId error " + error)
+  }
+}
+
+
+/* ***************************
  *  Week 03 - Get data for a specific vehicle in inventory (using inv_id)
  * ************************** */
 async function getInvDetail(inv_id) {
@@ -82,11 +103,11 @@ async function insertNewClassification(newClassification) {
 
   const query = `
     INSERT INTO classification 
-    (classification_name, account_id, classification_approved, classification_approval_date)
-    VALUES ($1, $2, $3, $4)
+    (classification_name, submitter_account_id, classification_creation_date)
+    VALUES ($1, $2, $3)
     RETURNING *`;
 
-  const values = [classification_name, account_id, false, new Date()];
+  const values = [classification_name, account_id, new Date()];
 
   try {
       const {rows} = await pool.query(query, values);
@@ -97,7 +118,7 @@ async function insertNewClassification(newClassification) {
 }
 
 /* ***************************
- *  Week 04 - Insert New Vehicle
+ *  week 04 - Insert New Vehicle
  * ************************** */
 async function insertNewVehicle(newVehicle) {
   const {
@@ -115,7 +136,7 @@ async function insertNewVehicle(newVehicle) {
   } = newVehicle;
 
   const query = `
-  INSERT INTO inventory (
+    INSERT INTO inventory (
       classification_id,
       inv_make,
       inv_model,
@@ -126,37 +147,34 @@ async function insertNewVehicle(newVehicle) {
       inv_year,
       inv_miles,
       inv_color,
-      account_id,
-      inv_approved,
-      inv_approved_date
-  )
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-  RETURNING *`
+      submitter_account_id,
+      inventory_creation_date
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    RETURNING *`;
 
   const values = [
-      classification_id,
-      inv_make,
-      inv_model,
-      inv_description,
-      inv_image,
-      inv_thumbnail,
-      inv_price,
-      inv_year,
-      inv_miles,
-      inv_color,
-      account_id,
-      false,
-      new Date()
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color,
+    account_id,          // submitter_account_id
+    new Date()           // inv_creation_date
   ];
 
   try {
-      const { rows } = await pool.query(query, values)
-      return rows[0] // Return the inserted row if needed
+    const { rows } = await pool.query(query, values);
+    return rows[0]; // Return the inserted row if needed
   } catch (error) {
-      console.error("insertNewVehicle error", error)
-      throw error
-  }
-  
+    console.error("insertNewVehicle error", error);
+    throw error;
+  }dev
 }
 
 /* ***************************
@@ -217,6 +235,7 @@ module.exports = {
   getClassifications, 
   getApprovedClassifications,
   getInventoryByClassificationId, 
+  getApprovedInventoryByClassificationId,
   getInvDetail, 
   checkExistingClassification, 
   insertNewClassification, 

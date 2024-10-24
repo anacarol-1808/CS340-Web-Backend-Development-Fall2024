@@ -18,6 +18,11 @@
         <h3>Inventory Management</h3>
         <p><a href="/inv/management">Manage Inventory</a></p>
     <% } %>
+
+    <% if (user.account_type === 'Admin') { %>
+        <h3>Inventory Approval Panel</h3>
+        <p><a href="/inv/approval-panel">Pending Inventory Review</a></p>
+    <% } %>
     
 <% } else { %>
     <p>You are not logged in. Please <a href="/account/login">log in</a>.</p>
