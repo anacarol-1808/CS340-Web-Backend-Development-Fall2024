@@ -230,6 +230,70 @@ async function updateInventory(
   }
 }
 
+/* ***************************
+ *  Week 06 - Get all Classifications that are pending approval
+ * ************************** */
+async function getPendingApprovalClassificationList () {
+  try {
+    const sql = `
+      SELECT 
+          c.classification_id,
+          c.classification_name,
+          c.classification_creation_date,
+          a.account_firstname AS account_firstname,
+          a.account_lastname AS account_lastname
+      FROM 
+          classification c
+      JOIN 
+          account a ON c.submitter_account_id = a.account_id
+      WHERE 
+          c.classification_approved = false
+    `;
+    const result = await pool.query(sql);
+    return result.rows; // Adjust based on your database library; if using pg-pool, you might need to access `result.rows`.
+  } catch (error) {
+    console.error("Error fetching classifications pending approval:", error);
+    throw error;
+  }
+};
+
+/* ***************************
+ *  week 06 - Get all Inventory that are pending approval
+ * ************************** */
+async function getPendingApprovalInventoryList() {
+  try {
+    const sql = `
+      SELECT 
+          i.inv_id,
+          i.inv_make,
+          i.inv_model,
+          i.inv_description,
+          i.inv_image,
+          i.inv_thumbnail,
+          i.inv_price,
+          i.inv_year,
+          i.inv_miles,
+          i.inv_color,
+          a.account_firstname AS account_firstname,
+          a.account_lastname AS account_lastname,
+          c.classification_name AS classification_name
+      FROM 
+          inventory i
+      JOIN 
+          account a ON i.submitter_account_id = a.account_id
+      JOIN 
+          classification c ON i.classification_id = c.classification_id
+      WHERE 
+          i.inv_approved = false
+    `;
+    const result = await pool.query(sql);
+    return result.rows; // Adjust based on your database library.
+  } catch (error) {
+    console.error("Error fetching inventory items pending approval:", error);
+    throw error;
+  }
+}
+
 
 module.exports = {
   getClassifications, 
@@ -241,4 +305,6 @@ module.exports = {
   insertNewClassification, 
   insertNewVehicle, 
   updateInventory,
-  deleteInventory}
+  deleteInventory,
+  getPendingApprovalClassificationList,
+  getPendingApprovalInventoryList}

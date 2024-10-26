@@ -73,16 +73,12 @@ router.post("/deleteVehicle",
     utilities.handleErrors(invController.deleteInventory)
 )
 
-// week 06 - Route to render the Approve Panel View request
-router.get("/approvePanel", 
+// Route to render the Approval Panel View
+router.get("/approval-panel", 
     utilities.checkAdmin,
-    utilities.handleErrors(invController.renderApprovePanelView))
+    utilities.handleErrors(invController.renderApprovalPanelView))
 
-// // week 06 - Route to Handle the Approve Or Reject request
-// router.post("/deleteVehicle",
-//     utilities.checkAdmin,
-//     utilities.handleErrors(invController.deleteInventory)
-// )
+
 
 
 

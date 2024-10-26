@@ -373,5 +373,50 @@ invCont.deleteInventory = async function (req, res, next) {
 
 }
 
+/* ***************************
+ *  Week 06 - Render the Approval Panel View
+ * ************************** */
+invCont.renderApprovalPanelView = async function (req, res, next) {
+  try {
+    // Fetch classifications pending approval
+    const pendingClassifications = await invModel.getPendingApprovalClassificationList();
+    
+    // Fetch inventory items pending approval
+    const pendingInventory = await invModel.getPendingApprovalInventoryList();
+
+    console.log("Pending Classifications:", pendingClassifications);
+    console.log("Pending Inventory:", pendingInventory);
+    
+    // Generate the navigation
+    let nav = await utilities.getNav();
+
+    // Check if no classifications and no inventory are pending approval
+    if (pendingClassifications.length === 0 && pendingInventory.length === 0) {
+      req.flash("notice", "There are no classifications or inventory items pending approval.");
+      return res.render("./inventory/approval-panel", {
+        title: "Pending Approvals",
+        nav,
+        pendingClassifications, // Will be an empty array
+        pendingInventory,       // Will be an empty array
+        errors: null,
+        user: req.session.user  // Pass the user session data to the view
+      });
+    }
+
+    // Render the approval-panel view with pending classifications and inventory items
+    res.render("./inventory/approval-panel", {
+      title: "Pending Approvals",
+      nav,
+      pendingClassifications,
+      pendingInventory,
+      errors: null,
+      user: req.session.user  // Pass the user session data to the view
+    });
+  } catch (error) {
+    next(error); // Pass the error to the global error handler
+  }
+};
+
+
 
 module.exports = invCont
