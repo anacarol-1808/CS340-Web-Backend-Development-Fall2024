@@ -300,10 +300,13 @@ async function getPendingApprovalInventoryList() {
 async function approveClassification(classification_id, admin_account_id) {
   const sql = `
     UPDATE classification
-    SET classification_approved = true
+    SET classification_approved = true,
+        approver_account_id = $2,
+        classification_approval_date = $3
     WHERE classification_id = $1
   `;
-  await pool.query(sql, [classification_id]);
+  const approvalDate = new Date(); // Get the current date and time
+  await pool.query(sql, [classification_id, admin_account_id, approvalDate]);
 }
 
 /* ***************************
@@ -312,11 +315,15 @@ async function approveClassification(classification_id, admin_account_id) {
 async function approveInventory(inv_id, admin_account_id) {
   const sql = `
     UPDATE inventory
-    SET inv_approved = true
+    SET inv_approved = true,
+        approver_account_id = $2,
+        Inventory_approval_date = $3
     WHERE inv_id = $1
   `;
-  await pool.query(sql, [inv_id]);
+  const approvalDate = new Date(); // Get the current date and time
+  await pool.query(sql, [inv_id, admin_account_id, approvalDate]);
 }
+
 
  /* ***************************
  *  Week 06 - Delete Classification
