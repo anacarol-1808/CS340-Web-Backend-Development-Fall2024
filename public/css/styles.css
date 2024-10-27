@@ -368,6 +368,33 @@ main {
   margin: 1em;
 }
 
+.approve-btn {
+  background-color: green; /* Green background for approve */
+  color: white;            /* White text */
+  border: none;           /* No border */
+  padding: 10px 20px;     /* Padding for size */
+  cursor: pointer;         /* Pointer cursor on hover */
+  border-radius: 5px;     /* Rounded corners */
+}
+
+.reject-btn {
+  background-color: rgba(255, 0, 0, 0.527);   /* Red background for reject */
+  color: white;            /* White text */
+  border: none;           /* No border */
+  padding: 10px 20px;     /* Padding for size */
+  cursor: pointer;         /* Pointer cursor on hover */
+  border-radius: 5px;     /* Rounded corners */
+}
+
+/* Optional: Add hover effects */
+.approve-btn:hover {
+  background-color: darkgreen; /* Darker green on hover */
+}
+
+.reject-btn:hover {
+  background-color: darkred;   /* Darker red on hover */
+}
+
 
 /* Adjust the image size for medium screens */
 @media screen and (max-width: 900px){

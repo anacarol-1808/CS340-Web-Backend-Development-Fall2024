@@ -417,6 +417,62 @@ invCont.renderApprovalPanelView = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Week 06 - Process the Classificaiton Approval
+ * ************************** */
+invCont.processClassificationApproval = async function (req, res, next) {
+  const { action, classification_id } = req.body;
+  const admin_account_id = req.session.user.account_id;
+  console.log('Processing classification approval:', req.body);
+
+  try {
+    if (action === 'approve' && classification_id) {
+      // Approve the classification
+      await invModel.approveClassification(classification_id, admin_account_id);
+      req.flash('success', 'Classification approved successfully.');
+    } else if (action === 'reject' && classification_id) {
+      // Delete the classification from the database
+      await invModel.deleteClassification(classification_id, admin_account_id);
+      req.flash('success', 'Classification rejected and deleted successfully.');
+    }
+
+    // Redirect back to the approval panel after processing
+    res.redirect('/inv/approval-panel');
+  } catch (error) {
+    console.error('Error processing classification approval:', error);
+    req.flash('error', 'An error occurred while processing the classification.');
+    res.redirect('/inv/approval-panel');
+  }
+};
+
+/* ***************************
+ *  Week 06 - Process the Inventory Approval
+ * ************************** */
+invCont.processInventoryApproval = async function (req, res, next) {
+  const { action, inv_id } = req.body;
+  const admin_account_id = req.session.user.account_id;
+  console.log('Processing inventory approval:', req.body);
+
+  try {
+    if (action === 'approve' && inv_id) {
+      // Approve the inventory item
+      await invModel.approveInventory(inv_id, admin_account_id);
+      req.flash('success', 'Inventory item approved successfully.');
+    } else if (action === 'reject' && inv_id) {
+      // Delete the inventory item from the database
+      await invModel.deleteInventory(inv_id, admin_account_id);
+      req.flash('success', 'Inventory item rejected and deleted successfully.');
+    }
+
+    // Redirect back to the approval panel after processing
+    res.redirect('/inv/approval-panel');
+  } catch (error) {
+    console.error('Error processing inventory approval:', error);
+    req.flash('error', 'An error occurred while processing the inventory item.');
+    res.redirect('/inv/approval-panel');
+  }
+};
+
 
 
 module.exports = invCont

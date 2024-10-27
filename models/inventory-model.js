@@ -294,6 +294,39 @@ async function getPendingApprovalInventoryList() {
   }
 }
 
+/* ***************************
+ *  Week 06 - Approve Classification
+ * ************************** */
+async function approveClassification(classification_id, admin_account_id) {
+  const sql = `
+    UPDATE classification
+    SET classification_approved = true
+    WHERE classification_id = $1
+  `;
+  await pool.query(sql, [classification_id]);
+}
+
+/* ***************************
+ *  Week 06 - Approve Inventory
+ * ************************** */
+async function approveInventory(inv_id, admin_account_id) {
+  const sql = `
+    UPDATE inventory
+    SET inv_approved = true
+    WHERE inv_id = $1
+  `;
+  await pool.query(sql, [inv_id]);
+}
+
+ /* ***************************
+ *  Week 06 - Delete Classification
+ * ************************** */
+async function deleteClassification(classification_id) {
+  const sql = `DELETE FROM classification WHERE classification_id = $1`;
+  await pool.query(sql, [classification_id]);
+}
+
+
 
 module.exports = {
   getClassifications, 
@@ -307,4 +340,7 @@ module.exports = {
   updateInventory,
   deleteInventory,
   getPendingApprovalClassificationList,
-  getPendingApprovalInventoryList}
+  getPendingApprovalInventoryList,
+  deleteClassification,
+  approveClassification,
+  approveInventory}

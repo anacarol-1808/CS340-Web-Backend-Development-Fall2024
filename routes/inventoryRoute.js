@@ -73,10 +73,23 @@ router.post("/deleteVehicle",
     utilities.handleErrors(invController.deleteInventory)
 )
 
-// Route to render the Approval Panel View
+// week 06 - Route to render the Approval Panel View
 router.get("/approval-panel", 
     utilities.checkAdmin,
-    utilities.handleErrors(invController.renderApprovalPanelView))
+    utilities.handleErrors(invController.renderApprovalPanelView)
+);
+
+// week 06 - Route to process approval and rejection actions for classifications
+router.post("/approval-panel-classification", 
+    utilities.checkAdmin, // Admin check middleware
+    utilities.handleErrors(invController.processClassificationApproval) // Handle the form submission for classification
+);
+
+// week 06 - Route to process approval and rejection actions for inventory items
+router.post("/approval-panel-inventory", 
+    utilities.checkAdmin, // Admin check middleware
+    utilities.handleErrors(invController.processInventoryApproval) // Handle the form submission for inventory
+);
 
 
 

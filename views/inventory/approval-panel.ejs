@@ -18,7 +18,7 @@
 <!-- Classifications Pending Approval Form -->
 <% if (pendingClassifications && pendingClassifications.length > 0) { %>
   <% pendingClassifications.forEach(classification => { %>
-    <form action="/approval-panel" method="post">
+    <form action="/inv/approval-panel-classification" method="post">
       <fieldset>
         <legend>Classifications Pending Approval</legend>
 
@@ -33,12 +33,12 @@
         <input type="date" name="classification_creation_date" value="<%= new Date(classification.classification_creation_date).toISOString().split('T')[0] %>" readonly>
 
         <!-- Hidden field to identify classification form -->
-        <input type="hidden" name="type" value="classification">
-        <input type="hidden" name="classification_id" value="<%= classification.classification_id %>">
+        <input type="hidden" name="classification_id" value="<%= classification.classification_id %>"> 
         <input type="hidden" name="admin_account_id" value="<%= user.account_id %>">
 
-        <button type="submit" name="action" value="approve">Approve</button>
-        <button type="submit" name="action" value="reject">Reject</button>
+        <!-- Approve and Reject buttons -->
+        <button type="submit" name="action" value="approve" class="approve-btn">Approve</button>
+        <button type="submit" name="action" value="reject" class="reject-btn">Reject</button>
       </fieldset>
     </form>
   <% }) %>
@@ -49,7 +49,7 @@
 <!-- Inventory Pending Approval Form -->
 <% if (pendingInventory && pendingInventory.length > 0) { %>
   <% pendingInventory.forEach(inventory => { %>
-    <form action="/approval-panel" method="post">
+    <form action="/inv/approval-panel-inventory" method="post">
       <fieldset>
         <legend>Inventory Pending Approval</legend>
 
@@ -84,16 +84,15 @@
         <input type="text" id="color" name="inv_color" readonly value="<%= inventory.inv_color %>">
 
         <!-- Hidden field to identify inventory form -->
-        <input type="hidden" name="type" value="inventory">
         <input type="hidden" name="inv_id" value="<%= inventory.inv_id %>">
         <input type="hidden" name="admin_account_id" value="<%= user.account_id %>">
 
-        <button type="submit" name="action" value="approve">Approve</button>
-        <button type="submit" name="action" value="reject">Reject</button>
+        <!-- Approve and Reject buttons -->
+        <button type="submit" name="action" value="approve" class="approve-btn">Approve</button>
+        <button type="submit" name="action" value="reject" class="reject-btn">Reject</button>
       </fieldset>
     </form>
   <% }) %>
 <% } else { %>
   <p>No inventory items pending approval.</p>
 <% } %>
-
